@@ -12,6 +12,8 @@ import CommSelectionScreen from "../screens/CommSelectionScreen";
 import InterestFormScreen from  "../screens/InterestFormScreen";
 import MeetingConnections from  "../screens/MeetingConnections";
 import ChatScreen from "../screens/ChatScreen";
+import CameraScreen from "../screens/CameraScreen";
+
 
 
 const Stack = createStackNavigator();
@@ -70,11 +72,6 @@ export default function App() {
         <Stack.Screen
           name="Meeting Connections"
           component={MeetingConnections}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="Chat"
-          component={ChatScreen}
           options={{ headerShown: true }}
         />
         

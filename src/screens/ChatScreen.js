@@ -5,15 +5,16 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 // import Ionicons from "react-native-vector-icons/Ionicons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { supabase } from "../utils/hooks/supabase"; // Import Supabase client
-
 import Header from "../components/Header";
 import { CHATBOTS } from "./ConversationScreen";
+import { useAuthentication } from "../utils/hooks/useAuthentication";
 
 export default function ChatScreen({ navigation }) {
   const [chats, setChats] = useState([]);
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
-
+  const [communityMsgs, setCommunityMsgs] = useState(0);
+  const { user } = useAuthentication();
   function getChatbots() {
     let chatbotsTemp = [];
     for (const botId in CHATBOTS) {
@@ -22,6 +23,21 @@ export default function ChatScreen({ navigation }) {
 
     setChats((otherChats) => [...otherChats, ...chatbotsTemp]);
   }
+  const fetchUserData = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("profiles") // Replace with your table name
+        .select("new_msg")
+        .eq("id", user.id)
+        .single();
+        setCommunityMsgs(data.new_msg);
+      if (error) throw error;
+
+    } catch (error) {
+      console.error("Error fetching user data:", error.message);
+      setLoading(false);
+    }
+  };
 
   // async function getUserChats() {
   //   // Fetch user chats from Supabase
@@ -51,7 +67,19 @@ export default function ChatScreen({ navigation }) {
       getChatbots();
       // getUserChats();
     }
-  }, [chats.length]);
+  
+    if (user !== null) {
+      const fetchUserDataAsync = async () => {
+        await fetchUserData();
+      };
+  
+      fetchUserDataAsync();
+      if (communityMsgs > 0)
+      {
+        console.log(communityMsgs);
+      }
+    }
+  }, [chats.length, user, communityMsgs]);
 
   return (
     <View

@@ -156,7 +156,7 @@ function InterestSelectionScreen() {
             <View style={styles.modalButtonContainer}>
               <TouchableOpacity style={styles.modalButton} onPress={() => {
                 setModalVisible(false);
-                navigation.navigate("Profile");
+                navigation.navigate("Camera");
               }}>
                 <Text style={styles.modalButtonText}>Yes</Text>
               </TouchableOpacity>

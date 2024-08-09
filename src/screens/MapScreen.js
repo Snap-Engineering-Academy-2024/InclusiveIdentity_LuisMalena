@@ -172,15 +172,15 @@ export default function MapScreen({ navigation }) {
         longitudeDelta: 0.0421,
       };
       setCurrentRegion(region);
-      if (user !== null) {
-          await fetchAndSaveLocationData();
-          if (popupTriggerPing)
-          {
-            const usernamesLoc = await fetchProfilesWithInterest();
-            determineSelection(usernamesLoc);
-          }
+      // if (user !== null) {
+      //     await fetchAndSaveLocationData();
+      //     if (popupTriggerPing)
+      //     {
+      //       const usernamesLoc = await fetchProfilesWithInterest();
+      //       determineSelection(usernamesLoc);
+      //     }
 
-      }
+      // }
     })();
   }, [user, popupTrigger, popupTriggerPing]);
 

@@ -31,6 +31,7 @@ export default function AuthStack() {
         <Stack.Screen name="Meeting Connections" component={MeetingConnections} options={{ headerShown: false}}/>
 
 
+
       </Stack.Navigator>
     </NavigationContainer>
   );
