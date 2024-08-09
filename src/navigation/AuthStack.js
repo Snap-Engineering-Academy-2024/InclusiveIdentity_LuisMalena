@@ -32,6 +32,7 @@ export default function AuthStack() {
         <Stack.Screen name="CommunityChat" component={CommunityChatScreen} />
 
 
+
       </Stack.Navigator>
     </NavigationContainer>
   );

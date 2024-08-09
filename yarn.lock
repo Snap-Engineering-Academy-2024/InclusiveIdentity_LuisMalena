@@ -3144,6 +3144,11 @@ expo-asset@~10.0.10:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
+expo-av@^14.0.6:
+  version "14.0.6"
+  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-14.0.6.tgz#ca0eaa74f64f93f3dad79ead2c0a8e6aaebb53c0"
+  integrity sha512-8FHKgMYo49C5hhgG0ssRRd454VQ82TuujhMdlz7ScJBihEXa89kWKpfk9bXrvetFtrJoAmYuGxsXCJCygZhxfA==
+
 expo-camera@~15.0.14:
   version "15.0.14"
   resolved "https://registry.npmjs.org/expo-camera/-/expo-camera-15.0.14.tgz"
@@ -5521,6 +5526,11 @@ react-native-vector-icons@^10.1.0:
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
+
+react-native-video@^6.4.3:
+  version "6.4.3"
+  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-6.4.3.tgz#54ec38012a7a35a00da53b5eb9bdf9887cf5706b"
+  integrity sha512-KDuIz/JsD3mYT1Ma2oDBE3GIEHRO3a9GzMAEV8pKMtIh29j7X2DLr2L9oD4Kv94ggYag/+RuZpOtftxnDHDoXA==
 
 react-native-vision-camera@^2.14.0:
   version "2.15.4"

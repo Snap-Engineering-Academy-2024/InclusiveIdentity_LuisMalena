@@ -3,50 +3,41 @@ import { Text, View, TouchableOpacity, StyleSheet, FlatList, Image, Button } fro
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { supabase } from "../utils/hooks/supabase"; // Import Supabase client
 import Header from "../components/Header";
+import { CHATBOTS } from "./ConversationScreen";
+import { useAuthentication } from "../utils/hooks/useAuthentication";
+import VideoPlayer from "../components/FigmaPlayer";
 
 const ChatScreen = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState('All');
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
+  const [communityMsgs, setCommunityMsgs] = useState(0);
+  const { user } = useAuthentication();
+  function getChatbots() {
+    let chatbotsTemp = [];
+    for (const botId in CHATBOTS) {
+      chatbotsTemp.push({ isChatbot: true, chatId: botId });
+    }
 
-  const chats = [
-    { isChatbot: false, chatId: "My AI", avatar: "https://i.imgur.com/gVhTRnu_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "Took a Screenshot • 2h" },
-    { isChatbot: false, chatId: "Rob Black", avatar: "https://i.imgur.com/Ht4cY9d_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "New Snap • 2h" },
-    { isChatbot: false, chatId: "Jennifer Nguyen", avatar: "https://i.imgur.com/9ejBTJh_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "New Snap • 2h" },
-    { isChatbot: false, chatId: "Team Snapchat", avatar: "https://i.imgur.com/Ht4cY9d_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "Received • 2h" },
-    { isChatbot: false, chatId: "Cindy Lu", avatar: "https://i.imgur.com/Ht4cY9d_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "Opened • 2h" },
-    { isChatbot: false, chatId: "Design Platforms Team", avatar: "https://i.imgur.com/Ht4cY9d_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "Received from Rajveer • 2h" },
-    { isChatbot: false, chatId: "Cassie Lu", avatar: "https://i.imgur.com/Ht4cY9d_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "New Chat • 2h" }
-  ];
-  const requests = [
-    { isChatbot: false, chatId: "My AI", avatar: "https://i.imgur.com/gVhTRnu_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "Took a Screenshot • 2h" },
-    { isChatbot: false, chatId: "Rob Black", avatar: "https://i.imgur.com/Ht4cY9d_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "New Snap • 2h" },
-  ];
+    setChats((otherChats) => [...otherChats, ...chatbotsTemp]);
+  }
+  const fetchUserData = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("profiles") // Replace with your table name
+        .select("new_msg")
+        .eq("id", user.id)
+        .single();
+        setCommunityMsgs(data.new_msg);
+      if (error) throw error;
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.userButton}
-      onPress={() => {
-        navigation.navigate("Conversation", {
-          isChatbot: item.isChatbot,
-          chatId: item.chatId,
-        });
-      }}
-    >
-      <Image
-        style={styles.avatar}
-        source={{ uri: item.avatar }}
-      />
-      <View style={styles.userInfo}>
-        <View>
-          <Text style={styles.userName}>{item.chatId}</Text>
-          <Text style={styles.userStatus}>{item.status}</Text>
-        </View>
-        <Ionicons name="camera-outline" size={24} color="lightgrey" />
-      </View>
-    </TouchableOpacity>
-  );
+    } catch (error) {
+      console.error("Error fetching user data:", error.message);
+      setLoading(false);
+    }
+  };
 
   const tabs = ['All', 'Community', 'Groups', 'Stories', 'New'];
 
@@ -67,6 +58,40 @@ const ChatScreen = ({ navigation }) => {
     </View>
   );
   
+  //   if (error) {
+  //     console.error("Error fetching user chats:", error);
+  //     return;
+  //   }
+
+  //   // Add user chats to array
+  //   let userChatsTemp = [];
+  //   if (userChats) {
+  //     userChats.forEach((userChat) => {
+  //       userChatsTemp.push({ isChatbot: false, chatId: userChat.id });
+  //     });
+  //   }
+
+  //   setChats((otherChats) => [...otherChats, ...userChatsTemp]);
+  // }
+
+  useEffect(() => {
+    if (chats.length < 1) {
+      getChatbots();
+      // getUserChats();
+    }
+  
+    if (user !== null) {
+      const fetchUserDataAsync = async () => {
+        await fetchUserData();
+      };
+  
+      fetchUserDataAsync();
+      if (communityMsgs > 0)
+      {
+        console.log(communityMsgs);
+      }
+    }
+  }, [chats.length, user, communityMsgs]);
 
   return (
     <View
@@ -82,25 +107,36 @@ const ChatScreen = ({ navigation }) => {
       ]}
     >
       <Header title="Chat" />
-      <NotificationBar />
-      <View style={styles.tabContainer}>
-        {tabs.map(tab => (
-          <TouchableOpacity
-            key={tab}
-            style={[
-              styles.tab,
-              selectedTab === tab && styles.selectedTab
-            ]}
-            onPress={() => setSelectedTab(tab)}
-          >
-            <Text style={[
-              styles.tabText,
-              selectedTab === tab && styles.selectedTabText
-            ]}>
-              {tab}
-            </Text>
-          </TouchableOpacity>
-        ))}
+      
+      <View>
+        {chats?.map((chat) => {
+          return (
+            <TouchableOpacity
+              style={styles.userButton}
+              onPress={() => {
+                navigation.navigate("Conversation", {
+                  isChatbot: chat.isChatbot,
+                  chatId: chat.chatId,
+                });
+              }}
+              key={chat.chatId}
+            >
+              <Ionicons
+                style={styles.userIcon}
+                name="person-outline"
+                size={36}
+                color="lightgrey"
+              />
+              <Text style={styles.userName}> {chat.chatId} </Text>
+              <Ionicons
+                style={styles.userCamera}
+                name="camera-outline"
+                size={24}
+                color="lightgrey"
+              />
+            </TouchableOpacity>
+          );
+        })}
       </View>
       {selectedTab === 'All' && (
         <FlatList

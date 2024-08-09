@@ -196,16 +196,6 @@ export default function ProfileScreen() {
           {popupTrigger ? community : '+ Add Community'}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonStyle2}
-          onPress={() => {
-          
-              navigation.navigate("Identity");
-          }}>
-          <Text style={styles.buttonText2}>
-           Add Community
-          </Text>
-        </TouchableOpacity>
         {
           popupTrigger && <TouchableOpacity
                       style={styles.buttonStyle2}

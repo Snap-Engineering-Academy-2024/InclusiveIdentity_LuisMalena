@@ -13,6 +13,8 @@ import InterestFormScreen from  "../screens/InterestFormScreen";
 import MeetingConnections from  "../screens/MeetingConnections";
 import ChatScreen from "../screens/ChatScreen";
 import CommunityChatScreen from "../screens/CommunityChatScreen";
+import CameraScreen from "../screens/CameraScreen";
+
 
 
 const Stack = createStackNavigator();
