@@ -8,6 +8,7 @@ import { supabase } from "../utils/hooks/supabase"; // Import Supabase client
 import Header from "../components/Header";
 import { CHATBOTS } from "./ConversationScreen";
 import { useAuthentication } from "../utils/hooks/useAuthentication";
+import VideoPlayer from "../components/FigmaPlayer";
 
 export default function ChatScreen({ navigation }) {
   const [chats, setChats] = useState([]);
@@ -95,6 +96,7 @@ export default function ChatScreen({ navigation }) {
       ]}
     >
       <Header title="Chat" />
+      
       <View>
         {chats?.map((chat) => {
           return (
