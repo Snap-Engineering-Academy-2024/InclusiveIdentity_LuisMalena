@@ -4,7 +4,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Header from "../components/Header";
+import { CHATBOTS } from "./ConversationScreen";
+import { useAuthentication } from "../utils/hooks/useAuthentication";
 
+const ChatScreen = ({ navigation }) => {
+  const [selectedTab, setSelectedTab] = useState('All');
 const ChatScreen = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState('All');
   const insets = useSafeAreaInsets();
@@ -146,6 +150,7 @@ const ChatScreen = ({ navigation }) => {
     </View>
   );
 };
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -202,7 +207,60 @@ const styles = StyleSheet.create({
   selectedTabText: {
     color: "#0fadfe",
   },
+  notificationContainer: {
+    backgroundColor: "#F8F8F8",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgrey",
+  },
+  notificationTouchable: {
+    backgroundColor: "#FFF",
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  notificationContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  notificationTextContainer: {
+    marginLeft: 10,
+  },
+  notificationTitle: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  notificationMessage: {
+    fontSize: 14,
+    color: "grey",
+  },
+  tabContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgrey",
+  },
+  tab: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+  },
+  tabText: {
+    color: "grey",
+  },
+  selectedTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: "#0fadfe",
+  },
+  selectedTabText: {
+    color: "#0fadfe",
+  },
   userButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 15,
     flexDirection: "row",
     alignItems: "center",
     padding: 15,
@@ -232,6 +290,9 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 18,
   },
+  userStatus: {
+    fontSize: 12,
+    color: "grey",
   userStatus: {
     fontSize: 12,
     color: "grey",
