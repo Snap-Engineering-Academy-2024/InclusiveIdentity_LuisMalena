@@ -4,10 +4,19 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Header from "../components/Header";
+
 const ChatScreen = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState('All');
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
+  const [showNotif, setShowNotif] = useState(true);
+ 
+  const handlePressNotif = () => {
+    console.log("What the Sigma");
+    setSelectedTab("Community");
+    setShowNotif(false);
+  };
+
   const chats = [
     { isChatbot: false, chatId: "My AI", avatar: "https://i.imgur.com/gVhTRnu_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "Took a Screenshot • 2h" },
     { isChatbot: false, chatId: "Rob Black", avatar: "https://i.imgur.com/SOh9QEc_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "New Snap • 2h" },
@@ -51,7 +60,7 @@ const ChatScreen = ({ navigation }) => {
   const tabs = ['All', 'Community', 'Groups', 'Stories', 'New'];
   const NotificationBar = () => (
     <View style={styles.notificationContainer}>
-      <TouchableOpacity style={styles.notificationTouchable}>
+      <TouchableOpacity style={styles.notificationTouchable} onPress={handlePressNotif}>
         <View style={styles.notificationContent}>
           <Ionicons name="logo-snapchat" size={24} color="black" />
           <View style={styles.notificationTextContainer}>
@@ -79,7 +88,7 @@ const ChatScreen = ({ navigation }) => {
       ]}
     >
       <Header title="Chat" />
-      <NotificationBar />
+      {showNotif && <NotificationBar />}
       <View style={styles.tabContainer}>
         {tabs.map(tab => (
           <TouchableOpacity
@@ -178,7 +187,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#0FADFE",
   },
   selectedTabText: {
-    color: "#0FADFE",
+    color: "#0fadfe",
   },
   userButton: {
     flexDirection: "row",
