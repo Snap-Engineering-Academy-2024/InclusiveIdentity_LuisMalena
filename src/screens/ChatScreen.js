@@ -4,22 +4,20 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Header from "../components/Header";
-import { CHATBOTS } from "./ConversationScreen";
-import { useAuthentication } from "../utils/hooks/useAuthentication";
 
-const ChatScreen = ({ navigation }) => {
-  const [selectedTab, setSelectedTab] = useState('All');
+
 const ChatScreen = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState('All');
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
-  const [isNotificationVisible, setNotificationVisible] = useState(true);
+  const [showNotif, setShowNotif] = useState(true);
+ 
+  const handlePressNotif = () => {
+    console.log("What the Sigma");
+    setSelectedTab("Community");
+    setShowNotif(false);
+  };
 
-  function handleClickNotification()
-  {
-    console.log ("hii");
-    // setNotificationVisible(false);
-  }
   const chats = [
     { isChatbot: false, chatId: "My AI", avatar: "https://i.imgur.com/gVhTRnu_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "Took a Screenshot • 2h" },
     { isChatbot: false, chatId: "Rob Black", avatar: "https://i.imgur.com/Ht4cY9d_d.jpg?maxwidth=520&shape=thumb&fidelity=high", status: "New Snap • 2h" },
@@ -42,10 +40,7 @@ const ChatScreen = ({ navigation }) => {
     <TouchableOpacity
       style={styles.userButton}
       onPress={() => {
-        navigation.navigate("CommunityChat", {
-          isChatbot: item.isChatbot,
-          chatId: item.chatId,
-        });
+        navigation.navigate("CommunityChat");
       }}
     >
       <Image
@@ -69,7 +64,7 @@ const ChatScreen = ({ navigation }) => {
 
   const NotificationBar = () => (
     <View style={styles.notificationContainer}>
-      <TouchableOpacity style={styles.notificationTouchable} onPress={handleClickNotification}>
+      <TouchableOpacity style={styles.notificationTouchable} onPress={handlePressNotif}>
         <View style={styles.notificationContent}>
           <Ionicons name="logo-snapchat" size={24} color="black" />
           <View style={styles.notificationTextContainer}>
@@ -77,7 +72,7 @@ const ChatScreen = ({ navigation }) => {
             <Text style={styles.notificationMessage}>Someone in your radius wants to connect!</Text>
           </View>
         </View>
-        <TouchableOpacity >
+        <TouchableOpacity>
         <Ionicons name="close-outline" size={24} color="grey" />
         </TouchableOpacity>
       </TouchableOpacity>
@@ -99,9 +94,7 @@ const ChatScreen = ({ navigation }) => {
       ]}
     >
       <Header title="Chat" />
-      {isNotificationVisible && (
-        <NotificationBar />
-      )}
+      {showNotif && <NotificationBar />}
       <View style={styles.tabContainer}>
         {tabs.map(tab => (
           <TouchableOpacity
@@ -110,7 +103,7 @@ const ChatScreen = ({ navigation }) => {
               styles.tab,
               selectedTab === tab && styles.selectedTab
             ]}
-            onPress={() => {setSelectedTab(tab); console.log("what the sigma")}}
+            onPress={() => setSelectedTab(tab)}
           >
             <Text style={[
               styles.tabText,
@@ -149,7 +142,6 @@ const ChatScreen = ({ navigation }) => {
       )}
     </View>
   );
-};
 };
 
 const styles = StyleSheet.create({
@@ -207,60 +199,7 @@ const styles = StyleSheet.create({
   selectedTabText: {
     color: "#0fadfe",
   },
-  notificationContainer: {
-    backgroundColor: "#F8F8F8",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "lightgrey",
-  },
-  notificationTouchable: {
-    backgroundColor: "#FFF",
-    padding: 10,
-    borderRadius: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  notificationContent: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  notificationTextContainer: {
-    marginLeft: 10,
-  },
-  notificationTitle: {
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  notificationMessage: {
-    fontSize: 14,
-    color: "grey",
-  },
-  tabContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    borderBottomWidth: 1,
-    borderBottomColor: "lightgrey",
-  },
-  tab: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    fontSize: 16,
-  },
-  tabText: {
-    color: "grey",
-  },
-  selectedTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: "#0fadfe",
-  },
-  selectedTabText: {
-    color: "#0fadfe",
-  },
   userButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15,
     flexDirection: "row",
     alignItems: "center",
     padding: 15,
@@ -290,9 +229,6 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 18,
   },
-  userStatus: {
-    fontSize: 12,
-    color: "grey",
   userStatus: {
     fontSize: 12,
     color: "grey",

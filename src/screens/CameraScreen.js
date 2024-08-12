@@ -42,8 +42,8 @@ export default function CameraScreen({ navigation, focused }) {
       // console.log(JSON.stringify(user, null, 4))
     }
     (async () => {
-      const { status: mediaLibraryStatus } = await MediaLibrary.requestPermissionsAsync();
-      setHasMediaLibraryPermission(mediaLibraryStatus === 'granted');
+      //const { status: mediaLibraryStatus } = await MediaLibrary.requestPermissionsAsync();
+      //setHasMediaLibraryPermission(mediaLibraryStatus === 'granted');
     })();
   }, [user]);
 
