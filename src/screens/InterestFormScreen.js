@@ -10,7 +10,7 @@ const trendingInterests = [
   { name: "Twilight", category: "Pop Culture & Entertainment" },
   { name: "Cooking", category: "Hobby" },
   { name: "Skating", category: "Sport" },
-  { name: "Dance", category: "Hobby" }
+  { name: "Dance", category: "Hobby" },
 ];
 
 function InterestSelectionScreen() {
