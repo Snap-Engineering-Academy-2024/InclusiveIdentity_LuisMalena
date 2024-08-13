@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 10,
     overflow: 'hidden',
-    height: 250,
+    height: 270,
     padding: 10,
     marginBottom: 10,
     borderColor: 'transparent',

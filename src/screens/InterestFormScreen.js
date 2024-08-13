@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image, TextInput, ImageBackground, Modal } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -11,6 +10,29 @@ const trendingInterests = [
   { name: "Cooking", category: "Hobby" },
   { name: "Skating", category: "Sport" },
   { name: "Dance", category: "Hobby" },
+  { name: "Designer", category: "Career" },
+  { name: "Storyteller", category: "Career" },
+  { name: "Engineer", category: "Career" },
+  { name: "Harry Potter", category: "Pop Culture & Entertainment" },
+  { name: "Tik Tok", category: "Pop Culture & Entertainment" },
+  { name: "Fashion", category: "Hobby" },
+  { name: "Reading", category: "Hobby" },
+  { name: "Taylor Swift", category: "Music" },
+  { name: "Frisbee", category: "Hobby" },
+  { name: "The Smiths", category: "Music" },
+  { name: "Bob Dylan", category: "Music" },
+  { name: "Tennis", category: "Hobby" },
+  { name: "Photography", category: "Hobby" },
+  { name: "Writing", category: "Hobby" },
+  { name: "Bird Watching", category: "Hobby" },
+  { name: "Soccer", category: "Sport" },
+  { name: "Jiu-Jitsu", category: "Sport" },
+  { name: "Running", category: "Hobby" },
+  { name: "Software Engineer", category: "Career" },
+  { name: "Teacher", category: "Career" },
+  { name: "Doctor", category: "Career" },
+  { name: "Entrepreneur", category: "Career" },
+
 ];
 
 function InterestSelectionScreen() {
@@ -19,6 +41,8 @@ function InterestSelectionScreen() {
   const [popupTrigger, setPopupTrigger] = useState(false);
   const { user } = useAuthentication();
   const [isModalVisible, setModalVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredInterests, setFilteredInterests] = useState(trendingInterests);
 
   const handlePress = async (text) => {
     await writeToTable(text);
@@ -50,8 +74,6 @@ function InterestSelectionScreen() {
     }
   };
 
-  const [searchQuery, setSearchQuery] = useState("");
-
   const toggleInterest = (interest) => {
     if (selectedInterests.includes(interest)) {
       setSelectedInterests(selectedInterests.filter((i) => i !== interest));
@@ -60,7 +82,6 @@ function InterestSelectionScreen() {
     }
   };
 
-  useEffect(() => {}, [user]);
   useEffect(() => {
     const updateTable = async () => {
       if (selectedInterests.length === 3) {
@@ -71,6 +92,13 @@ function InterestSelectionScreen() {
 
     updateTable();
   }, [selectedInterests]);
+
+  useEffect(() => {
+    const filtered = trendingInterests.filter((interest) =>
+      interest.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredInterests(filtered);
+  }, [searchQuery]);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -100,7 +128,7 @@ function InterestSelectionScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.interestsContainer}>
-          {trendingInterests.map((interest) => (
+          {filteredInterests.map((interest) => (
             <View key={interest.name} style={styles.interestItem}>
               <View style={styles.interestTextContainer}>
                 <Text style={styles.interestName}>{interest.name}</Text>
@@ -175,183 +203,185 @@ function InterestSelectionScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
-    marginBottom: 900, 
-  },
-  searchBar: {
-    width: '100%',
-    padding: 10,
-    marginBottom: 20,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 20,
-    backgroundColor: 'white',
-  },
-  headerImage: {
-    width: 380,
-    height: 280,
-  },
-  headerImage2: {
-    width: 380,
-    height: 290,
-    marginTop: 20,
-    marginBottom: 150,
-    marginLeft: 10,
-  },
-  headerText: {
-    marginTop: 10,
-    fontSize: 15,
-    textAlign: 'center',
-    color: 'grey',
-  },
-  trendingContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingVertical: 10,
-  },
-  trendingTitle: {
-    fontSize: 17,
-    fontWeight: "bold",
-  },
-  seeMore: {
-    fontSize: 14,
-    color: 'black',
-  },
-  interestsContainer: {
-    width: '100%',
-  },
-  interestItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderColor: 'lightgrey',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    paddingRight: 10,
-    paddingLeft: 10,
-  },
-  interestTextContainer: {
-    flexDirection: 'column',
-  },
-  interestName: {
-    fontSize: 16,
-  },
-  interestCategory: {
-    fontSize: 12,
-    color: 'grey',
-  },
-  addButton: {
-    backgroundColor: "#0fadfe",
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 20,
-  },
-  selectedAddButton: {
-    backgroundColor: "#0fadfe",
-  },
-  addButtonText: {
-    color: "white",
-    fontSize: 14,
-  },
-  submitButton: {
-    marginTop: 20,
-    backgroundColor: "#FFFC00",
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 20,
-    borderColor: "black",
-    borderWidth: 1,
-  },
-  submitButtonText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "black",
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-  
-  },
-  backgroundImage2: {
-    // flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-    width: 400,
-    height: 900,
+    container: {
+      flexGrow: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 20,
+      paddingBottom: 100, 
+    },
+    searchBar: {
+      width: '100%',
+      padding: 10,
+      marginBottom: 20,
+      borderColor: 'gray',
+      borderWidth: 1,
+      borderRadius: 20,
+      backgroundColor: 'white',
+    },
+    headerImage: {
+      width: 380,
+      height: 280,
+    },
+    headerImage2: {
+      width: 380,
+      height: 290,
+      marginTop: 20,
+      marginBottom: 150,
+      marginLeft: 10,
+    },
+    headerText: {
+      marginTop: 10,
+      fontSize: 15,
+      textAlign: 'center',
+      color: 'grey',
+    },
+    trendingContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: '100%',
+      paddingVertical: 10,
+    },
+    trendingTitle: {
+      fontSize: 17,
+      fontWeight: "bold",
+    },
+    seeMore: {
+      fontSize: 14,
+      color: 'black',
+    },
+    interestsContainer: {
+      width: '100%',
+    },
+    interestItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 10,
+      borderBottomWidth: 1,
+      borderColor: 'lightgrey',
+      backgroundColor: 'white',
+      borderRadius: 10,
+      paddingRight: 10,
+      paddingLeft: 10,
+    },
+    interestTextContainer: {
+      flexDirection: 'column',
+    },
+    interestName: {
+      fontSize: 16,
+    },
+    interestCategory: {
+      fontSize: 12,
+      color: 'grey',
+    },
+    addButton: {
+      backgroundColor: "#0fadfe",
+      paddingVertical: 5,
+      paddingHorizontal: 15,
+      borderRadius: 20,
+    },
+    selectedAddButton: {
+      backgroundColor: "#0fadfe",
+    },
+    addButtonText: {
+      color: "white",
+      fontSize: 14,
+    },
+    submitButton: {
+      marginTop: 20,
+      backgroundColor: "#FFFC00",
+      paddingVertical: 10,
+      paddingHorizontal: 30,
+      borderRadius: 20,
+      borderColor: "black",
+      borderWidth: 1,
+    },
+    submitButtonText: {
+      fontSize: 18,
+      fontWeight: "bold",
+      color: "black",
+    },
+    backgroundImage: {
+      flex: 1,
+      resizeMode: "cover",
+      justifyContent: "center",
     
-  },
-  continueButtonContainer: {
-    position: 'absolute',
-    bottom: 30,
-    right: 30,
-    zIndex: 1000,
-  },
-  continueButton: {
-    backgroundColor: '#0fadfe',
-    paddingVertical: 13,
-    paddingHorizontal: 13,
-    borderRadius: 400,
-  },
-  continueButtonText: {
-    color: 'white',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalContent: {
-    // backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  modalText: {
-    fontSize: 17,
-    marginBottom: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    paddingLeft: 40,
-    paddingRight: 40,
-  },
-  modalButtonContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '70%',
-    marginLeft: 'auto',
-    marginRight: 'auto', 
-  },
-  modalButton: {
-    backgroundColor: '#0fadfe',
-    padding: 10,
-    borderRadius: 200,
-    width: '50%',
-    alignItems: 'center',
-    marginVertical: 5,
+    },
+    backgroundImage2: {
+      // flex: 1,
+      resizeMode: "cover",
+      justifyContent: "center",
+      width: 400,
+      height: 900,
+      
+    },
+    continueButtonContainer: {
+      position: 'absolute',
+      // top: 100,
+      bottom: 20,
+      right: 30,
+      zIndex: 1000,
+    },
+    continueButton: {
+      backgroundColor: '#0fadfe',
     
-  },
-  modalButtonText: {
-    color: 'white',
-    fontSize: 20,
-  },
-  centeredModalText: {
-    fontSize: 15,
-    marginBottom: 20,
-    textAlign: 'center',
-    paddingHorizontal: 40,
-    color: 'grey'
-  },
-});
+      paddingVertical: 13,
+      paddingHorizontal: 13,
+      borderRadius: 400,
+    },
+    continueButtonText: {
+      color: 'white',
+      fontSize: 30,
+      fontWeight: 'bold',
+    },
+    modalOverlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+    },
+    modalContent: {
+      // backgroundColor: 'white',
+      padding: 20,
+      borderRadius: 10,
+      alignItems: 'center',
+    },
+    modalText: {
+      fontSize: 17,
+      marginBottom: 20,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      paddingLeft: 40,
+      paddingRight: 40,
+    },
+    modalButtonContainer: {
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '70%',
+      marginLeft: 'auto',
+      marginRight: 'auto', 
+    },
+    modalButton: {
+      backgroundColor: '#0fadfe',
+      padding: 10,
+      borderRadius: 200,
+      width: '50%',
+      alignItems: 'center',
+      marginVertical: 5,
+      
+    },
+    modalButtonText: {
+      color: 'white',
+      fontSize: 20,
+    },
+    centeredModalText: {
+      fontSize: 15,
+      marginBottom: 20,
+      textAlign: 'center',
+      paddingHorizontal: 40,
+      color: 'grey'
+    },
+  });
 
 export default InterestSelectionScreen;
